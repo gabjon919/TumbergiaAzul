@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF8F6">
+  <title>Decoração - Tumbergia Azul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #FAF8F6;
+      --bg-card: #ffffff;
+      --text-primary: #3D2817;
+      --text-secondary: #6B5947;
+      --text-muted: #8B7B6B;
+      --primary: #2E86AB;
+      --primary-light: #E8F1F5;
+      --border: #E5DDD5;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; line-height: 1.2; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: rgba(250,248,246,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .nav-container, .main-container {
+      width: min(900px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+    .nav-container {
+      height: 58px;
+      display: flex;
+      align-items: center;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--text-primary);
+      font-family: 'Playfair Display', serif;
+    }
+    .back-link svg { width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+    .main-container { padding: 2.5rem 0 5rem; }
+    .page-header { margin-bottom: 2rem; text-align: center; }
+    .page-header h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); margin-bottom: .5rem; }
+    .page-header p { color: var(--text-muted); }
+    .decoration-card {
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .decoration-image {
+      display: block;
+      width: 100%;
+      max-height: 760px;
+      object-fit: contain;
+      background: #f2eee9;
+    }
+    .decoration-content { padding: 1.5rem; }
+    .decoration-content h2 { font-size: 1.35rem; margin-bottom: .5rem; }
+    .decoration-content p { color: var(--text-secondary); }
+    .partners {
+      display: grid;
+      gap: .75rem;
+      margin: 1.25rem 0;
+    }
+    .partner-link {
+      display: block;
+      padding: .85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--primary-light);
+      font-weight: 600;
+    }
+    .notice {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      background: #fff8df;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    footer {
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      text-align: center;
+      font-size: .85rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Tumbergia Azul
+      </a>
+    </div>
+  </nav>
+
+  <main class="main-container">
+    <header class="page-header">
+      <h1>Decoração</h1>
+      <p>Uma experiência especial preparada por parceiros.</p>
+    </header>
+
+    <article class="decoration-card">
+      <img class="decoration-image" src="colagem-tumbergia-azul.jpg" alt="Inspirações de decoração no Chalé Tumbergia Azul">
+      <div class="decoration-content">
+        <h2>Decoração realizada por parceiros</h2>
+        <p>Para montar uma surpresa especial no chalé, entre em contato diretamente com nossos parceiros:</p>
+        <div class="partners">
+          <a class="partner-link" href="https://www.instagram.com/loretamaria_/" target="_blank" rel="noopener noreferrer">@loretamaria_</a>
+          <a class="partner-link" href="https://www.instagram.com/surpresa_nasmontanhas/" target="_blank" rel="noopener noreferrer">@surpresa_nasmontanhas</a>
+        </div>
+        <p class="notice">(Caso feche decoração com nossos parceiros, favor nos avise por favor!)</p>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="currentYear"></span> Tumbergia Azul. Todos os direitos reservados.</p>
+  </footer>
+  <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>

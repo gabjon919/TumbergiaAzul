@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Café da Manhã - Tumbergia Azul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #FAF8F6; --card: #F5F2EE; --text: #3D2817; --muted: #8B7B6B; --primary: #2E86AB; --border: #E5DDD5; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; background: var(--bg); color: var(--text); font: 1rem/1.6 'Inter', sans-serif; display: grid; grid-template-rows: auto 1fr auto; }
+    h1, h2 { font-family: 'Playfair Display', Georgia, serif; }
+    .navbar { border-bottom: 1px solid var(--border); background: rgba(250,248,246,.95); }
+    .nav-container, main { width: min(760px, calc(100% - 2rem)); margin: auto; }
+    .nav-container { height: 64px; display: flex; align-items: center; }
+    .back-link { color: var(--text); font-family: 'Playfair Display', serif; text-decoration: none; }
+    main { padding: 4rem 0; }
+    .card { padding: 2.5rem 2rem; border: 1px solid var(--border); border-radius: 18px; background: var(--card); text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .icon { font-size: 3.2rem; margin-bottom: 1rem; }
+    h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: .75rem; }
+    p { color: var(--muted); }
+    .future { display: inline-block; margin-top: 1.5rem; padding: .65rem 1rem; border-radius: 99px; background: #FFF3CD; color: #856404; font-weight: 600; }
+    footer { padding: 2rem 1rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container"><a class="back-link" href="index.html">◀ Tumbergia Azul</a></div>
+  </nav>
+  <main>
+    <section class="card">
+      <div class="icon">☕</div>
+      <h1>Café da Manhã</h1>
+      <p>Estamos preparando essa experiência com carinho.</p>
+      <span class="future">Informações em uma atualização futura.</span>
+    </section>
+  </main>
+  <footer><p>&copy; <span id="currentYear"></span> Tumbergia Azul. Todos os direitos reservados.</p></footer>
+  <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
