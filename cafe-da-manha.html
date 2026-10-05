@@ -3,41 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#172a37">
   <title>Café da Manhã - Tumbergia Azul</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #FAF8F6; --card: #F5F2EE; --text: #3D2817; --muted: #8B7B6B; --primary: #2E86AB; --border: #E5DDD5; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { min-height: 100vh; background: var(--bg); color: var(--text); font: 1rem/1.6 'Inter', sans-serif; display: grid; grid-template-rows: auto 1fr auto; }
-    h1, h2 { font-family: 'Playfair Display', Georgia, serif; }
-    .navbar { border-bottom: 1px solid var(--border); background: rgba(250,248,246,.95); }
-    .nav-container, main { width: min(760px, calc(100% - 2rem)); margin: auto; }
-    .nav-container { height: 64px; display: flex; align-items: center; }
-    .back-link { color: var(--text); font-family: 'Playfair Display', serif; text-decoration: none; }
-    main { padding: 4rem 0; }
-    .card { padding: 2.5rem 2rem; border: 1px solid var(--border); border-radius: 18px; background: var(--card); text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-    .icon { font-size: 3.2rem; margin-bottom: 1rem; }
-    h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: .75rem; }
-    p { color: var(--muted); }
-    .future { display: inline-block; margin-top: 1.5rem; padding: .65rem 1rem; border-radius: 99px; background: #FFF3CD; color: #856404; font-weight: 600; }
-    footer { padding: 2rem 1rem; border-top: 1px solid var(--border); color: var(--muted); text-align: center; font-size: .85rem; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
+      overflow: hidden;
+      background: #172a37;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .viewer {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      padding: 54px 0 82px;
+      overscroll-behavior: contain;
+      touch-action: none;
+    }
+    .menu-image {
+      display: block;
+      flex: 0 0 auto;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .viewer.zoomed { display: block; }
+    .viewer.zoomed .menu-image {
+      width: auto;
+      height: auto;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+    }
+    .toolbar {
+      position: fixed;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      background: rgba(17,30,40,.78);
+      backdrop-filter: blur(10px);
+    }
+    .topbar { top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); }
+    .bottom-bar {
+      right: max(10px, env(safe-area-inset-right));
+      bottom: max(10px, env(safe-area-inset-bottom));
+      left: max(10px, env(safe-area-inset-left));
+      justify-content: center;
+    }
+    .toolbar a, .toolbar button {
+      min-width: 42px;
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .55rem .8rem;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 9px;
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      font: 600 .95rem Arial, sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toolbar a:hover, .toolbar button:hover { background: rgba(255,255,255,.22); }
+    .zoom-level { min-width: 48px; text-align: center; font-size: .82rem; }
+    .download { background: #2e86ab !important; }
+    @media (max-width: 390px) {
+      .toolbar { gap: .25rem; padding: .35rem; }
+      .toolbar a, .toolbar button { min-width: 38px; min-height: 40px; padding: .45rem .6rem; }
+    }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-container"><a class="back-link" href="index.html">◀ Tumbergia Azul</a></div>
+  <nav class="toolbar topbar" aria-label="Navegação">
+    <a href="index.html" aria-label="Voltar para a página inicial">← Voltar</a>
   </nav>
-  <main>
-    <section class="card">
-      <div class="icon">☕</div>
-      <h1>Café da Manhã</h1>
-      <p>Estamos preparando essa experiência com carinho.</p>
-      <span class="future">Informações em uma atualização futura.</span>
-    </section>
+
+  <main class="viewer" id="viewer" aria-label="Imagem do café da manhã">
+    <img class="menu-image" id="menuImage" src="cafe-da-manha.jpg" alt="Cardápio do café da manhã do Chalé Tumbergia Azul">
   </main>
-  <footer><p>&copy; <span id="currentYear"></span> Tumbergia Azul. Todos os direitos reservados.</p></footer>
-  <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+
+  <div class="toolbar bottom-bar" aria-label="Controles da imagem">
+    <button id="zoomOut" type="button" aria-label="Diminuir zoom">−</button>
+    <span class="zoom-level" id="zoomLevel" aria-live="polite">Ajustar</span>
+    <button id="zoomIn" type="button" aria-label="Ampliar imagem">+</button>
+    <button id="fitImage" type="button">Ajustar</button>
+    <a class="download" href="cafe-da-manha.jpg" download="cafe-da-manha-tumbergia-azul.jpg">Baixar</a>
+  </div>
+
+  <script>
+    const viewer = document.getElementById('viewer');
+    const image = document.getElementById('menuImage');
+    const zoomLevel = document.getElementById('zoomLevel');
+    let zoom = 1;
+    let fitWidth = 0;
+    let fitHeight = 0;
+    const activePointers = new Map();
+    let pinchGesture = null;
+
+    function measureImage() {
+      const styles = window.getComputedStyle(viewer);
+      const availableWidth = viewer.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+      const availableHeight = viewer.clientHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom);
+      const scale = Math.min(
+        availableWidth / image.naturalWidth,
+        availableHeight / image.naturalHeight
+      );
+      fitWidth = Math.floor(image.naturalWidth * scale);
+      fitHeight = Math.floor(image.naturalHeight * scale);
+      renderImage();
+    }
+
+    function renderImage() {
+      if (!fitWidth || !fitHeight) return;
+      const isZoomed = zoom > 1;
+      viewer.classList.toggle('zoomed', isZoomed);
+      image.style.width = `${Math.round(fitWidth * zoom)}px`;
+      image.style.height = `${Math.round(fitHeight * zoom)}px`;
+      zoomLevel.textContent = isZoomed ? `${Math.round(zoom * 100)}%` : 'Ajustar';
+      if (!isZoomed) viewer.scrollTo({ top: 0, left: 0 });
+    }
+
+    function distanceBetween(first, second) {
+      return Math.hypot(second.x - first.x, second.y - first.y);
+    }
+
+    function midpointBetween(first, second) {
+      return {
+        x: (first.x + second.x) / 2,
+        y: (first.y + second.y) / 2
+      };
+    }
+
+    function imagePointAt(x, y) {
+      const rect = image.getBoundingClientRect();
+      return {
+        x: rect.width ? Math.max(0, Math.min(1, (x - rect.left) / rect.width)) : 0.5,
+        y: rect.height ? Math.max(0, Math.min(1, (y - rect.top) / rect.height)) : 0.5
+      };
+    }
+
+    function keepImagePointInPlace(point, x, y) {
+      const rect = image.getBoundingClientRect();
+      viewer.scrollLeft += rect.left + point.x * rect.width - x;
+      viewer.scrollTop += rect.top + point.y * rect.height - y;
+    }
+
+    function beginPinch() {
+      const [first, second] = [...activePointers.values()];
+      if (!first || !second) return;
+      const midpoint = midpointBetween(first, second);
+      pinchGesture = {
+        startDistance: Math.max(distanceBetween(first, second), 1),
+        startZoom: zoom,
+        imagePoint: imagePointAt(midpoint.x, midpoint.y)
+      };
+    }
+
+    viewer.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+      event.preventDefault();
+      activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      viewer.setPointerCapture(event.pointerId);
+      if (activePointers.size === 2) beginPinch();
+    });
+
+    viewer.addEventListener('pointermove', (event) => {
+      const previous = activePointers.get(event.pointerId);
+      if (!previous) return;
+
+      const current = { x: event.clientX, y: event.clientY };
+      activePointers.set(event.pointerId, current);
+
+      if (activePointers.size >= 2) {
+        if (!pinchGesture) beginPinch();
+        const [first, second] = [...activePointers.values()];
+        const midpoint = midpointBetween(first, second);
+        zoom = Math.max(
+          1,
+          Math.min(4, pinchGesture.startZoom * distanceBetween(first, second) / pinchGesture.startDistance)
+        );
+        renderImage();
+        keepImagePointInPlace(pinchGesture.imagePoint, midpoint.x, midpoint.y);
+        return;
+      }
+
+      if (zoom > 1) {
+        viewer.scrollLeft -= current.x - previous.x;
+        viewer.scrollTop -= current.y - previous.y;
+      }
+    });
+
+    function endPointer(event) {
+      if (!activePointers.has(event.pointerId)) return;
+      activePointers.delete(event.pointerId);
+      pinchGesture = null;
+    }
+
+    viewer.addEventListener('pointerup', endPointer);
+    viewer.addEventListener('pointercancel', endPointer);
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      zoom = Math.min(4, Math.round((zoom + 0.5) * 10) / 10);
+      renderImage();
+    });
+    document.getElementById('zoomOut').addEventListener('click', () => {
+      zoom = Math.max(1, Math.round((zoom - 0.5) * 10) / 10);
+      renderImage();
+    });
+    document.getElementById('fitImage').addEventListener('click', () => {
+      zoom = 1;
+      renderImage();
+    });
+    image.addEventListener('load', measureImage);
+    window.addEventListener('resize', measureImage);
+    if (image.complete) measureImage();
+  </script>
 </body>
 </html>
